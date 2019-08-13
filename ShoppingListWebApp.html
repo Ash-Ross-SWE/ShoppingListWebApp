@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Shopping List</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="jquery-3.4.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container" style="box-shadow: 10px 10px gray;border-style: inset">
+	<div class="row">
+		<div class="span12" style="color:navy;"><h1 class="text-center">Shopping List</h1></div>
+		<br>
+	</div>
+	<div class="row" style="text-align: center;box-shadow: 5px 5px navy;border: 1px solid blue;border-style: inset; margin:10px">
+		<div class="form-inline row" style=" margin:20px">
+		  <label for="Product">Product:</label>
+		  <input type="text" class="form-control input-sm" id="Product" style="margin-right:20px">
+		  <label for="Qua">Quantity:</label>
+		  <input type="text" class="form-control input-sm" id="Qua" onkeypress="return isNumberKey(event)">
+		  <button type="button" class="btn btn-default btn-sm" id="btnadd">Add</button>
+		</div>
+	</div>
+	<br>
+	<div class="row" style="box-shadow: 5px 5px navy;border: 1px solid blue;border-style: inset; margin:10px">
+	 <table class="table table-striped" id="table">
+    <thead>
+      <tr>
+        <th>Products</th>
+        <th>Quantity</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+  </table>
+	</div>
+</div>
+<script>
+	function isNumberKey(evt)
+	{
+		var charCode = (evt.which) ? evt.which : evt.keyCode;
+		if (charCode != 46 && charCode > 31 
+		&& (charCode < 48 || charCode > 57))
+			return false;
+		return true;
+	}
+	$("#btnadd").click(function(){
+	  var products=$("#Product").val();
+	  var qut=$("#Qua").val();
+	  if(products.length<1 || qut.length<1 || qut==0)
+		alert("Please enter valid Product and Quantity");
+	  else
+	  {
+		var table = document.getElementById("table");
+		var row = table.insertRow(1);
+		var cell1 = row.insertCell(0);
+		var cell2 = row.insertCell(1);
+		var cell3 = row.insertCell(2);
+		cell1.innerHTML = products;
+		cell2.innerHTML = qut;
+		var btn = document.createElement('input');
+		btn.type = "button";
+		btn.className = "btn btn-default btn-sm";
+		btn.value = "Remove";
+		cell3.appendChild(btn);
+		$("#Product").val("");
+		$("#Qua").val("");
+		
+	  }
+	});	
+
+	$('table').on('click', 'input[type="button"]', function(e){
+		var productName = $('td:first', $(this).parents('tr')).text();
+		if (confirm("Are you sure you want to remove '"+productName+"' from the list?")) {
+			$(this).closest('tr').remove()
+		} 
+	
+	})
+</script>
+
+</body>
